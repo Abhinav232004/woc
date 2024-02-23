@@ -37,4 +37,4 @@ jobs:
 
       - name: SSH into the VM 
         run:
-          gcloud compute ssh ${{ secrets.GCP_INSTANCE_NAME}} --zone=${{ secrets.GCP_ZONE }} --command "rmdir SkillWell"
+          gcloud compute ssh ${{ secrets.GCP_INSTANCE_NAME}} --zone=${{ secrets.GCP_ZONE }} --command "rmdir -r SkillWell"
