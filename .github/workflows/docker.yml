@@ -41,7 +41,7 @@ jobs:
 
           # SSH into the VM and execute ls -l command
           gcloud compute ssh ${{ secrets.GCP_INSTANCE_NAME}} --zone=${{ secrets.GCP_ZONE }} --command "
-            REPO_PATH=\$HOME/my_repo
+            REPO_PATH=\$HOME
 
             # List the contents of the repository directory
             ls -l \$REPO_PATH
