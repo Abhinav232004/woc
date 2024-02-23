@@ -35,22 +35,32 @@ jobs:
         with:
           credentials_json: ${{ secrets.GCP_SA_KEY }}
 
-      - name: SSH into the VM and List Repository Directory
-        run: |
-          REPO_PATH=~
+      # - name: SSH into the VM and List Repository Directory
+      #   run: |
+      #     REPO_PATH=~
 
-          # SSH into the VM and clone the repo
-          gcloud compute ssh ${{ secrets.GCP_INSTANCE_NAME}} --zone=${{ secrets.GCP_ZONE }} --command "
-            REPO_PATH=\$HOME
-            if [ ! -d \"\$REPO_PATH\" ]; then
-            git clone ${{github.repositoryUrl}} \$REPO_PATH
-            else
-            echo \"Repository already exists. Skipping clone.\"
-            fi
-          "
+      #     # SSH into the VM and clone the repo
+      #     gcloud compute ssh ${{ secrets.GCP_INSTANCE_NAME}} --zone=${{ secrets.GCP_ZONE }} --command "
+      #       REPO_PATH=\$HOME
+      #       if [ ! -d \"\$REPO_PATH\" ]; then
+      #       git clone ${{github.repositoryUrl}} \$REPO_PATH
+      #       else
+      #       echo \"Repository already exists. Skipping clone.\"
+      #       fi
+      #     "
       - name: SSH into the VM and Install Required Packages
         run: |
           # SSH into the VM 
           gcloud compute ssh ${{ secrets.GCP_INSTANCE_NAME}} --zone=${{ secrets.GCP_ZONE }} --command 'cd woc && sudo apt-get update && sudo apt-get install -y nginx && sudo service nginx status && sudo apt update && sudo apt install -y apt-transport-https ca-certificates curl software-properties-common && curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add - && sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable" && apt-cache policy docker-ce && sudo apt install -y docker-ce && sudo systemctl status docker && sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose && sudo chmod +x /usr/local/bin/docker-compose && docker-compose --version'
 
+      - name: SSH into the VM and build the Docker image 
+        run: |
+          # SSH into the VM and clone the repo
+          gcloud compute ssh ${{ secrets.GCP_INSTANCE_NAME}} --zone=${{ secrets.GCP_ZONE }} --command 'cd woc &&  sudo docker-compose up --build'
+
+      # - name: SSH into the VM and do the necessary changes in the nginx file for hosting the docker container
+      #   run: |
+      #     # SSH into the VM and clone the repo
+      #     gcloud compute ssh ${{ secrets.GCP_INSTANCE_NAME}} --zone=${{ secrets.GCP_ZONE }} --command 'cd woc &&  cd /etc/nginx/sites-enabled'
+          
 
