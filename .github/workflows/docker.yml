@@ -56,7 +56,7 @@ jobs:
       - name: SSH into the VM and build the Docker image 
         run: |
           # SSH into the VM and clone the repo
-          gcloud compute ssh ${{ secrets.GCP_INSTANCE_NAME}} --zone=${{ secrets.GCP_ZONE }} --command 'cd woc && git checkout soc && sudo docker-compose up --build'
+          gcloud compute ssh ${{ secrets.GCP_INSTANCE_NAME}} --zone=${{ secrets.GCP_ZONE }} --command 'cd woc && git checkout soc && cp .env.example .env && sudo docker-compose up --build'
 
       # - name: SSH into the VM and do the necessary changes in the nginx file for hosting the docker container
       #   run: |
