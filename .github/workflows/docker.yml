@@ -42,7 +42,9 @@ jobs:
           # SSH into the VM and execute ls -l command
           gcloud compute ssh ${{ secrets.GCP_INSTANCE_NAME}} --zone=${{ secrets.GCP_ZONE }} --command "
             REPO_PATH=\$HOME
-
-            # List the contents of the repository directory
-            ls -l \$REPO_PATH
+            if [ ! -d \"\$REPO_PATH\" ]; then
+            git clone https://github.com/${{ github.repository }}.git \$REPO_PATH
+            else
+            echo \"Repository already exists. Skipping clone.\"
+            fi
           "
