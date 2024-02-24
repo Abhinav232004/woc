@@ -62,13 +62,12 @@ jobs:
           gcloud compute ssh ${{ secrets.GCP_INSTANCE_NAME}} --zone=${{ secrets.GCP_ZONE }} --command '
           cd /etc/nginx/sites-enabled &&
           ls -l &&
-          if ! grep -q "proxy_pass http://localhost:8000;" /etc/nginx/sites-enabled/default; then
-            sudo sed -i "0,/try_files \$uri \$uri\/ =404;/s//&\n\ \ \ \ proxy_pass http:\/\/localhost:8000;/" /etc/nginx/sites-enabled/default &&
-            sudo sed -i "s/try_files \$uri \$uri\/ =404;/#&/" /etc/nginx/sites-enabled/default
-          fi
+          gcloud compute ssh ${{ secrets.GCP_INSTANCE_NAME}} --zone=${{ secrets.GCP_ZONE }} --command '
+            if ! grep -q "proxy_pass http://localhost:8000;" /etc/nginx/sites-enabled/default; then
+              sudo sed -i "/try_files \$uri \$uri\/ =404;/a \ \ \ \ proxy_pass http:\/\/localhost:8000;" /etc/nginx/sites-enabled/default
+            fi
           '
-
-
+          '
       # - name: SSH into the VM and do the necessary changes in the nginx file for hosting the docker container
       #   run: |
       #     # SSH into the VM and clone the repo
