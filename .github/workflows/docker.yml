@@ -57,14 +57,22 @@ jobs:
       #     gcloud compute ssh ${{ secrets.GCP_INSTANCE_NAME}} --zone=${{ secrets.GCP_ZONE }} --command 'cd woc && git checkout soc && cp .env.example .env && sudo docker-compose -f docker-compose.yml up -d'
       - name: SSH into the VM and edit the nginx file
         env:
-            CI: false
+          CI: false
         run: |
+          # Set up gcloud credentials (replace with your appropriate setup)
+          echo "$GCP_SERVICE_ACCOUNT_KEY" > /tmp/keyfile.json
+          gcloud auth activate-service-account --key-file=/tmp/keyfile.json
+          gcloud config set project $GCP_PROJECT_ID
+
+          # SSH into the VM and edit the file
           gcloud compute ssh ${{ secrets.GCP_INSTANCE_NAME}} --zone=${{ secrets.GCP_ZONE }} --command '
-          cd /etc/nginx/sites-enabled &&
-          ls -l &&
-          sudo sed -i "/try_files \$uri \$uri\/ =404;/a proxy_pass http://your_backend_server;" default
-          # sudo systemctl restart nginx
+            cd /etc/nginx/sites-enabled &&
+            ls -l &&
+            sudo sed -i "s/^try_files \$uri \$uri\/ =404;/# &/" default &&
+            sudo sed -i "/# try_files \$uri \$uri\/ =404;/a \    proxy_pass http://localhost8000;" default &&
+            sudo systemctl restart nginx
           '
+
 
 
       # - name: SSH into the VM and do the necessary changes in the nginx file for hosting the docker container
