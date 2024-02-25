@@ -20,10 +20,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Run Docker Compose
-        run: |
-          cp .env.example .env
-          docker-compose -f docker-compose.yml up -d
+      # - name: Run Docker Compose
+      #   run: |
+      #     cp .env.example .env
+      #     docker-compose -f docker-compose.yml up -d
 
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v2
@@ -51,6 +51,7 @@ jobs:
           gcloud compute ssh ${{ secrets.GCP_INSTANCE_NAME}} --zone=${{ secrets.GCP_ZONE }} --command "
             REPO_PATH=\$HOME
             if [ ! -d \"\$REPO_PATH\" ]; then
+            echo \"Repository does not exist. Cloning the repo.\"
             git clone ${{github.repositoryUrl}} && cd woc && sudo apt-get update && sudo apt-get install -y nginx && sudo service nginx status && sudo apt update && sudo apt install -y apt-transport-https ca-certificates curl software-properties-common && curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add - && sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable" && apt-cache policy docker-ce && sudo apt install -y docker-ce && sudo systemctl status docker && sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose && sudo chmod +x /usr/local/bin/docker-compose && docker-compose --version \$REPO_PATH
             else
             echo \"Repository already exists. Skipping clone.\"
