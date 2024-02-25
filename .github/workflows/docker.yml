@@ -35,13 +35,13 @@ jobs:
         with:
           credentials_json: ${{ secrets.GCP_SA_KEY }}
 
-      - name: SSH into the VM and list the directory
-        env:
-            CI: false
-        run: |
-          gcloud compute ssh ${{ secrets.GCP_INSTANCE_NAME}} --zone=${{ secrets.GCP_ZONE }} --command '
-          ls -l 
-          '
+      # - name: SSH into the VM and list the directory
+      #   env:
+      #       CI: false
+      #   run: |
+      #     gcloud compute ssh ${{ secrets.GCP_INSTANCE_NAME}} --zone=${{ secrets.GCP_ZONE }} --command '
+      #     ls -l 
+      #     '
 
       - name: SSH into the VM and List Repository Directory
         run: |
