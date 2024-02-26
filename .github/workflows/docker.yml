@@ -52,10 +52,9 @@ jobs:
           # SSH into the VM and clone the repo
           gcloud compute ssh ${{ secrets.GCP_INSTANCE_NAME}} --zone=${{ secrets.GCP_ZONE }} --command '
             REPO_PATH=\$HOME
-            cd runner &&
-            ls -l &&
+            cd woc &&
             echo $repo_name &&
-            ls -l
+            ls -l 
           '
       - name: SSH into the VM and List Repository Directory
         run: |
