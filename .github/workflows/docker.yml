@@ -47,7 +47,8 @@ jobs:
       - name: SSH into the VM and List Repository Directory
         run: |
           REPO_PATH=~
-          repo_name=${{ github.ref }}
+          repo_name=$(echo "${{ github.repository }}" | cut -d '/' -f 2)
+
 
           # SSH into the VM and clone the repo
           gcloud compute ssh ${{ secrets.GCP_INSTANCE_NAME}} --zone=${{ secrets.GCP_ZONE }} --command '
@@ -58,7 +59,8 @@ jobs:
       - name: SSH into the VM and List Repository Directory
         run: |
           REPO_PATH=~
-          repo_name=${{ github.ref }}
+          repo_name=$(echo "${{ github.repository }}" | cut -d '/' -f 2)
+
 
           # SSH into the VM and clone the repo
           gcloud compute ssh ${{ secrets.GCP_INSTANCE_NAME}} --zone=${{ secrets.GCP_ZONE }} --command '
