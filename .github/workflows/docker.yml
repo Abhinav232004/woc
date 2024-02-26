@@ -79,12 +79,13 @@ jobs:
           REPO_PATH=~
           repo_name=$(echo "${{ github.repository }}" | cut -d '/' -f 2)
           # SSH into the VM and clone the repo
-          gcloud compute ssh ${{ secrets.GCP_INSTANCE_NAME}} --zone=${{ secrets.GCP_ZONE }} --command '
+          gcloud compute ssh ${{ secrets.GCP_INSTANCE_NAME}} --zone=${{ secrets.GCP_ZONE }} --command "
             REPO_PATH=\$HOME
-            cd \$REPO_PATH/$repo_name  &&
+            cd \$REPO_PATH/$repo_name &&
             git checkout soc && 
             cp .env.example .env &&
-            sudo docker-compose -f docker-compose.yml up -d'
+            sudo docker-compose -f docker-compose.yml up -d"
+
       
       - name: SSH into the VM and edit the nginx file
         env:
