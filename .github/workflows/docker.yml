@@ -50,13 +50,13 @@ jobs:
 
           # SSH into the VM and clone the repo
           gcloud compute ssh ${{ secrets.GCP_INSTANCE_NAME}} --zone=${{ secrets.GCP_ZONE }} --command '
-            # REPO_PATH=\$HOME
-            # if [ ! -d \"\$REPO_PATH\" ]; then
-            # echo \"Repository does not exist. Cloning the repo.\"
+            REPO_PATH=\$HOME
+            if [ ! -d \"\$REPO_PATH\" ]; then
+            echo \"Repository does not exist. Cloning the repo.\"
             git clone ${{github.repositoryUrl}} 
-            # else
-            # echo \"Repository already exists. Skipping clone.\"
-            # fi
+            else
+            echo \"Repository already exists. Skipping clone.\"
+            fi
           '
       - name: SSH into the VM and build the Docker image 
         env:
