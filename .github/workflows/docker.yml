@@ -53,6 +53,7 @@ jobs:
           gcloud compute ssh ${{ secrets.GCP_INSTANCE_NAME}} --zone=${{ secrets.GCP_ZONE }} --command '
             REPO_PATH=\$HOME
             cd $repo_name &&
+            echo $repo_name &&
             ls -l 
           '
       - name: SSH into the VM and List Repository Directory
