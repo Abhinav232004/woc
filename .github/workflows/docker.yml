@@ -94,10 +94,11 @@ jobs:
             gcloud compute ssh ${{ secrets.GCP_INSTANCE_NAME}} --zone=${{ secrets.GCP_ZONE }} --command '
             cd /etc/nginx/sites-enabled &&
             ls -l &&
-            sudo sed -i "0,/try_files \$uri \$uri\/ =404;/a \ \ \ \ \ \ \ \ \ \ \ \ \ \  \ proxy_pass http:\/\/localhost:8000;" /etc/nginx/sites-enabled/default &&
-            sudo sed -i "0,/try_files \$uri \$uri\/ =404;/s/try_files \$uri \$uri\/ =404;/#&/" /etc/nginx/sites-enabled/default &&
+            sudo awk '!done && /try_files \$uri \$uri\/ =404;/ { print; print "        proxy_pass http:\/\/localhost:8000;"; done=1; next } 1' /etc/nginx/sites-enabled/default > temp_default &&
+            sudo mv temp_default /etc/nginx/sites-enabled/default &&
             sudo systemctl restart nginx
             '
+
 
 
 
