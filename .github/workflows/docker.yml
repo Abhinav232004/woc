@@ -60,16 +60,31 @@ jobs:
           REPO_PATH=~
           repo_name=$(echo "${{ github.repository }}" | cut -d '/' -f 2)
 
-
-          # SSH into the VM and clone the repo
-          gcloud compute ssh ${{ secrets.GCP_INSTANCE_NAME}} --zone=${{ secrets.GCP_ZONE }} --command '
+          # SSH into the VM and clone the repo if not exists
+          gcloud compute ssh ${{ secrets.GCP_INSTANCE_NAME}} --zone=${{ secrets.GCP_ZONE }} --command "
             REPO_PATH=\$HOME
-            if [ ! -d \"\$REPO_PATH\" ]; then
-            git clone https://github.com/${{github.repository}}.git && cd $repo_name && sudo apt-get update && sudo apt-get install -y nginx && sudo service nginx status && sudo apt update && sudo apt install -y apt-transport-https ca-certificates curl software-properties-common && curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add - && sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable" && apt-cache policy docker-ce && sudo apt install -y docker-ce && sudo systemctl status docker && sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose && sudo chmod +x /usr/local/bin/docker-compose && docker-compose --version \$REPO_PATH 
+
+            if [ ! -d \"\$REPO_PATH/$repo_name\" ]; then
+              git clone https://github.com/${{ github.repository }}.git \$REPO_PATH/$repo_name &&
+              cd \$REPO_PATH/$repo_name &&
+              sudo apt-get update &&
+              sudo apt-get install -y nginx &&
+              sudo service nginx status &&
+              sudo apt update &&
+              sudo apt install -y apt-transport-https ca-certificates curl software-properties-common &&
+              curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add - &&
+              sudo add-apt-repository \"deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable\" &&
+              apt-cache policy docker-ce &&
+              sudo apt install -y docker-ce &&
+              sudo systemctl status docker &&
+              sudo curl -L \"https://github.com/docker/compose/releases/download/1.29.2/docker-compose-\$(uname -s)-\$(uname -m)\" -o /usr/local/bin/docker-compose &&
+              sudo chmod +x /usr/local/bin/docker-compose &&
+              docker-compose --version
             else
-            echo \"Repository already exists. Skipping clone.\"
+              echo \"Repository already exists. Skipping clone.\"
             fi
-          '
+          "
+
       # - name: SSH into the VM and build the Docker image 
       #   env:
       #     CI: false
