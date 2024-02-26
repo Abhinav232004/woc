@@ -3,10 +3,12 @@ name: CI/CD
 on:
   push:
     branches:
-      -soc
+      - main
+      - soc
   pull_request:
     branches:
-      -'*'
+      - main
+      - soc
 jobs:
   deploy:
     runs-on: ubuntu-latest
