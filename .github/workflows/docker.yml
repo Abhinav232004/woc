@@ -95,7 +95,7 @@ jobs:
           cd /etc/nginx/sites-enabled &&
           ls -l &&
           sudo sh -c "grep -E '^\s*try_files \$uri \$uri/ =404;' /etc/nginx/sites-enabled/default | grep -E -v '^\s*#' | sed -i '/^\s*try_files \$uri \$uri\/ =404;/a \ \ \ \ \ \ \ \ \ \ \ \ \ \  \ proxy_pass http:\/\/localhost:8000;' /etc/nginx/sites-enabled/default" &&
-          sudo sh -c "grep -E '^\s*try_files \$uri \$uri/ =404;' /etc/nginx/sites-enabled/default | grep -E -v '^\s*#' | sed -i 's/^\(\s*try_files \$uri \$uri\/ =404;\)/# \1/' /etc/nginx/sites-enabled/default" &&
+          sudo sh -c "grep -E '^\s*try_files \$uri \$uri/ =404;' /etc/nginx/sites-enabled/default | grep -E -v '^\s*#' | sed -i 's/^\(\s*try_files \$uri \$uri\/ =404;\)/# \1/' /etc/nginx/sites-enabled/default"
           "
 
 
