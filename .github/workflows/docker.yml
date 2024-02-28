@@ -94,7 +94,11 @@ jobs:
           gcloud compute ssh ${{ secrets.GCP_INSTANCE_NAME}} --zone=${{ secrets.GCP_ZONE }} --command '
           cd /etc/nginx/sites-enabled &&
           ls -l &&
-          sudo sed -i "^/try_files \$uri \$uri\/ =404;/a \ \ \ \ \ \ \ \ \ \ \ \ \ \  \ proxy_pass http:\/\/localhost:8000;" /etc/nginx/sites-enabled/default
+          if grep -q "^ *try_files \$uri \$uri\/ =404;" /etc/nginx/sites-enabled/default; then
+            sudo sed -i "/try_files \$uri \$uri\/ =404;/a \ \ \ \ \ \ \ \ \ \ \ \ \ \  \ proxy_pass http:\/\/localhost:8000;" /etc/nginx/sites-enabled/default
+          else
+            echo "Line is already commented, skipping addition."
+          fi
           '
 
 
