@@ -91,13 +91,12 @@ jobs:
         env:
             CI: false
         run: |
-          gcloud compute ssh ${{ secrets.GCP_INSTANCE_NAME}} --zone=${{ secrets.GCP_ZONE }} --command "
+          gcloud compute ssh ${{ secrets.GCP_INSTANCE_NAME}} --zone=${{ secrets.GCP_ZONE }} --command '
           cd /etc/nginx/sites-enabled &&
           ls -l &&
-          sudo sh -c "grep -E '^\s*try_files \$uri \$uri/ =404;' /etc/nginx/sites-enabled/default | grep -E -v '^\s*#' | sed -i '/^\s*try_files \$uri \$uri\/ =404;/a \ \ \ \ \ \ \ \ \ \ \ \ \ \  \ proxy_pass http:\/\/localhost:8000;' /etc/nginx/sites-enabled/default" &&
-          sudo sh -c "grep -E '^\s*try_files \$uri \$uri/ =404;' /etc/nginx/sites-enabled/default | grep -E -v '^\s*#' | sed -i 's/^\(\s*try_files \$uri \$uri\/ =404;\)/# \1/' /etc/nginx/sites-enabled/default"
-
-          "
+          sudo sh -c "grep -E '^\s*try_files \$uri \$uri/ =404;' /etc/nginx/sites-enabled/default | grep -E -v '^\s*#' | sudo sed -i '/^\s*try_files \$uri \$uri\/ =404;/a \ \ \ \ \ \ \ \ \ \ \ \ \ \  \ proxy_pass http:\/\/localhost:8000;' /etc/nginx/sites-enabled/default" &&
+          sudo sh -c "grep -E '^\s*try_files \$uri \$uri/ =404;' /etc/nginx/sites-enabled/default | grep -E -v '^\s*#' | sudo sed -i 's/^\(\s*try_files \$uri \$uri\/ =404;\)/# \1/' /etc/nginx/sites-enabled/default"
+          '
 
 
           
