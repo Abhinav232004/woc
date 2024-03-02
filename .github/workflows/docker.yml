@@ -99,13 +99,17 @@ jobs:
           "
       - name: SSH into the VM and install certbot for https
         run: |
-          gcloud compute ssh ${{ secrets.GCP_INSTANCE_NAME}} --zone=${{ secrets.GCP_ZONE }} --command "
-          cd /etc/nginx/sites-enabled &&
-          sudo sed -i 's/server_name _;/server_name vm.rohitkori.tech;/' default &&
-          sudo snap install --classic certbot &&
-          sudo ln -s /snap/bin/certbot /usr/bin/certbot &&
-          echo -e '\n' | sudo certbot --nginx
-          "
+          gcloud compute ssh ${{ secrets.GCP_INSTANCE_NAME }} --zone=${{ secrets.GCP_ZONE }} --command "
+                sudo apt update &&
+                sudo apt install -y nginx &&
+                cd /etc/nginx/sites-enabled &&
+                sudo sed -i 's/server_name _;/server_name vm.rohitkori.tech;/' default &&
+                if [ ! -e /usr/bin/certbot ]; then
+                  sudo snap install --classic certbot &&
+                  sudo ln -s /snap/bin/certbot /usr/bin/certbot;
+                fi &&
+                echo -e '\n' | sudo certbot --nginx
+                "
 
 
 
