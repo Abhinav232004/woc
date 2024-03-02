@@ -42,7 +42,7 @@ jobs:
       #     gcloud compute ssh ${{ secrets.GCP_INSTANCE_NAME}} --zone=${{ secrets.GCP_ZONE }} --command '
       #     ls -l 
       #     '
-      
+
 
       # - name: SSH into the VM and clone the repo and install all dependencies
       #   run: |
@@ -109,7 +109,8 @@ jobs:
                   sudo snap install --classic certbot &&
                   sudo ln -s /snap/bin/certbot /usr/bin/certbot;
                 fi &&
-                echo -e '\n' | sudo certbot --nginx
+                echo -e '\n' | sudo certbot --nginx &&
+                echo '1'
                 "
 
 
