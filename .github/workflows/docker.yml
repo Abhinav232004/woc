@@ -3,12 +3,10 @@ name: CI/CD
 on:
   push:
     branches:
-      - main
-      - soc
+      - '*'
   pull_request:
     branches:
-      - main
-      - soc
+      - '*'
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -20,10 +18,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # - name: Run Docker Compose
-      #   run: |
-      #     cp .env.example .env
-      #     docker-compose -f docker-compose.yml up -d
+      - name: Run Docker Compose
+        run: |
+          cp .env.example .env
+          docker-compose -f docker-compose.yml up -d
 
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v2
