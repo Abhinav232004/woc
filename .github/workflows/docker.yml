@@ -34,12 +34,8 @@ jobs:
           credentials_json: ${{ secrets.GCP_SA_KEY }}
 
       - name: SSH into the VM
-        env:
-            CI: false
-            BRANCH_NAME: ${{secrets.BRANCH_NAME}}
         run: |
           gcloud compute ssh ${{ secrets.GCP_INSTANCE_NAME}} --zone=${{ secrets.GCP_ZONE }} --command '
-            echo ${BRANCH_NAME} &&
             ls -l
           '
 
@@ -75,7 +71,6 @@ jobs:
           "
       - name: SSH into the VM and build the Docker image 
         env:
-          CI: false
           BRANCH_NAME: ${{secrets.BRANCH_NAME}}
         run: |
           REPO_PATH=~
@@ -89,8 +84,6 @@ jobs:
 
       
       - name: SSH into the VM and edit the nginx file
-        env:
-          CI: false
         run: |
           gcloud compute ssh ${{ secrets.GCP_INSTANCE_NAME}} --zone=${{ secrets.GCP_ZONE }} --command "
           cd /etc/nginx/sites-enabled &&
