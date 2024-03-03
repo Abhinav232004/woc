@@ -104,7 +104,8 @@ jobs:
               sudo snap install --classic certbot &&
               sudo ln -s /snap/bin/certbot /usr/bin/certbot;
             fi &&
-            echo -e '\n' | sudo certbot --nginx
+            echo -e '\n' | sudo certbot --nginx |
+            (echo '1' && sleep 1 && echo) | sudo certbot --nginx
           "
 
 
