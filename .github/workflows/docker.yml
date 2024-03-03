@@ -40,8 +40,8 @@ jobs:
             CI: false
         run: |
           gcloud compute ssh ${{ secrets.GCP_INSTANCE_NAME}} --zone=${{ secrets.GCP_ZONE }} --command '
-          run: echo running on branch ${GITHUB_REF##*/} &&
-          ls -l 
+            echo running on branch ${GITHUB_REF##*/} &&
+            ls -l 
           '
 
 
