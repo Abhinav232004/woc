@@ -25,26 +25,26 @@ services:
         python manage.py makemigrations
         python manage.py migrate
         python manage.py runserver 0.0.0.0:8000
-  vue:
-    build:
-      context: ui
-      dockerfile: Dockerfile
-    image: 'soc-frontend:latest'
-    container_name: vue_soc
-    restart: unless-stopped
-    env_file: .env
-    environment:
-      - BACKEND_HOST=django
-      - CHOKIDAR_USEPOLLING=true
-    ports:
-    - 8080:8080
-    network_mode: bridge
-    volumes:
-    - ./ui:/app
-    - /app/node_modules
-    depends_on:
-      - django
-    command: npm run dev
+  # vue:
+  #   build:
+  #     context: ui
+  #     dockerfile: Dockerfile
+  #   image: 'soc-frontend:latest'
+  #   container_name: vue_soc
+  #   restart: unless-stopped
+  #   env_file: .env
+  #   environment:
+  #     - BACKEND_HOST=django
+  #     - CHOKIDAR_USEPOLLING=true
+  #   ports:
+  #   - 8080:8080
+  #   network_mode: bridge
+  #   volumes:
+  #   - ./ui:/app
+  #   - /app/node_modules
+  #   depends_on:
+  #     - django
+  #   command: npm run dev
   postgresql:
     image: 'bitnami/postgresql:latest'
     container_name: postgresql_soc
