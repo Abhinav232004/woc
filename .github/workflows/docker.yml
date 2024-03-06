@@ -18,10 +18,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Run Docker Compose
-        run: |
-          cp .env.example .env
-          docker-compose -f docker-compose.yml up -d
+      # - name: Run Docker Compose
+      #   run: |
+      #     cp .env.example .env
+      #     docker-compose -f docker-compose.yml up -d
 
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v2
@@ -78,7 +78,7 @@ jobs:
           gcloud compute ssh ${{ secrets.GCP_INSTANCE_NAME}} --zone=${{ secrets.GCP_ZONE }} --command "
             REPO_PATH=\$HOME
             cd \$REPO_PATH/$repo_name &&
-            git checkout $BRANCH_NAME && 
+            git checkout soc && 
             cp .env.example .env &&
             sudo docker-compose -f docker-compose.yml up -d"
 
