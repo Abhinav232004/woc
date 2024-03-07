@@ -105,7 +105,8 @@ jobs:
               sudo snap install --classic certbot &&
               sudo ln -s /snap/bin/certbot /usr/bin/certbot;
             fi &&
-            echo -e '\n' | sudo certbot --nginx &&
+            echo -e '\n' | echo -e ${{secrets.EMAIL}} | sudo certbot --nginx 
+
             sudo systemctl restart nginx
           "
 
