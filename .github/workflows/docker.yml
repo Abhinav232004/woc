@@ -77,7 +77,6 @@ jobs:
             REPO_PATH=\$HOME
             cd \$REPO_PATH/$repo_name &&
             git checkout ${{secrets.BRANCH_NAME}} && 
-            echo ${{secrets.BRANCH_NAME}} &&
             cp .env.example .env &&
             sudo docker-compose -f docker-compose.yml up -d"
 
