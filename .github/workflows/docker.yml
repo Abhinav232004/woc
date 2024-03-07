@@ -70,15 +70,13 @@ jobs:
             fi
           "
       - name: SSH into the VM and build the Docker image 
-        env:
-          BRANCH_NAME: ${{secrets.BRANCH_NAME}}
         run: |
           REPO_PATH=~
           repo_name=$(echo "${{ github.repository }}" | cut -d '/' -f 2)
           gcloud compute ssh ${{ secrets.GCP_INSTANCE_NAME}} --zone=${{ secrets.GCP_ZONE }} --command "
             REPO_PATH=\$HOME
             cd \$REPO_PATH/$repo_name &&
-            git checkout soc && 
+            git checkout ${{secrets.BRANCH_NAME}} && 
             cp .env.example .env &&
             sudo docker-compose -f docker-compose.yml up -d"
 
